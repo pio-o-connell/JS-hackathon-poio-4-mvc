@@ -48,9 +48,15 @@ class QuizView {
     this.rightPaneElement = document.querySelector('.right-pane');
     this.startQuizButton = document.getElementById('showOverlayBtn');
     this.overlayElement = this.rightPaneElement ? this.rightPaneElement.querySelector('.overlay') : null;
-    this.questionElement = this.rightPaneElement ? this.rightPaneElement.querySelector('.row-1 .question-text') : null;
+    this.questionElement = document.getElementById('questionText') || (this.rightPaneElement ? this.rightPaneElement.querySelector('.row-1 .question-text') : null);
     this.feedbackElement = this.rightPaneElement ? this.rightPaneElement.querySelector('.row-4 .feedback') : null;
     this.statusMessageElement = document.querySelector('.message-info-disabled');
+    if (this.questionElement) {
+      // Make the question text programmatically focusable so screen readers will announce it on change
+      this.questionElement.tabIndex = -1;
+      this.questionElement.setAttribute('role', 'heading');
+      this.questionElement.setAttribute('aria-level', '2');
+    }
   }
 
   setupModeButtons() {
@@ -119,10 +125,35 @@ class QuizView {
     this.answerButtons = Array.from(document.querySelectorAll('.answer-option'));
     this.answerButtons.forEach((button, index) => {
       button.dataset.optionIndex = index.toString();
+      // Pointer/click
       button.addEventListener('click', (ev) => {
         const idx = Number(ev.currentTarget.dataset.optionIndex);
         document.dispatchEvent(new CustomEvent('view:answer-selected', { detail: { selectedIndex: idx } }));
       });
+      // Keyboard accessibility: Enter/Space to select, arrow keys to navigate options
+      button.addEventListener('keydown', (ev) => {
+        const key = ev.key;
+        if (key === 'Enter' || key === ' ') {
+          ev.preventDefault();
+          button.click();
+          return;
+        }
+        const total = this.answerButtons.length;
+        let idx = Number(button.dataset.optionIndex) || 0;
+        if (key === 'ArrowRight' || key === 'ArrowDown') {
+          ev.preventDefault();
+          const next = (idx + 1) % total;
+          this.answerButtons[next].focus();
+        } else if (key === 'ArrowLeft' || key === 'ArrowUp') {
+          ev.preventDefault();
+          const prev = (idx - 1 + total) % total;
+          this.answerButtons[prev].focus();
+        }
+      });
+      // Set initial ARIA attributes
+      button.setAttribute('role', 'option');
+      button.setAttribute('aria-selected', 'false');
+      button.setAttribute('aria-disabled', button.disabled ? 'true' : 'false');
     });
   }
 
@@ -311,7 +342,11 @@ class QuizView {
   renderQuestion(questionData, questionIndex, totalQuestions) {
     if (!questionData) { this.setFeedback('No question available', false); return; }
     const questionNumber = questionIndex + 1;
-    if (this.questionElement) this.questionElement.textContent = `Question ${questionNumber} of ${totalQuestions}: ${questionData.question}`;
+    if (this.questionElement) {
+      this.questionElement.textContent = `Question ${questionNumber} of ${totalQuestions}: ${questionData.question}`;
+      // Focus the updated question so screen readers will announce the new content
+      try { this.questionElement.focus(); } catch (e) { /* ignore */ }
+    }
     this.answerButtons.forEach((button, index) => {
       const option = questionData.options[index];
       if (option) {
@@ -319,10 +354,15 @@ class QuizView {
         button.dataset.optionIndex = index.toString();
         button.classList.remove('hidden','correct','incorrect','selected');
         button.disabled = false;
+        // Announce option content for assistive tech
+        button.setAttribute('aria-label', `Option ${index + 1}: ${option.label}`);
+        button.setAttribute('aria-selected', 'false');
+        button.setAttribute('aria-disabled', 'false');
       } else {
         button.textContent = '';
         button.classList.add('hidden');
         button.disabled = true;
+        button.setAttribute('aria-disabled', 'true');
       }
     });
     if (this.feedbackElement) { this.feedbackElement.textContent = ''; this.feedbackElement.classList.remove('feedback--correct','feedback--incorrect'); }
@@ -338,12 +378,18 @@ class QuizView {
     this.answerButtons.forEach(button => {
       button.disabled = disable;
       button.classList.remove('correct','incorrect','selected');
+      button.setAttribute('aria-disabled', disable ? 'true' : 'false');
+      // when toggling, clear selection state
+      button.setAttribute('aria-selected', 'false');
       if (clearText) button.textContent = '';
     });
   }
 
   setFeedback(message, status) {
     if (!this.feedbackElement) return;
+    // Use an aria-live region for feedback so screen readers will announce it
+    this.feedbackElement.setAttribute('aria-live', 'polite');
+    this.feedbackElement.setAttribute('aria-atomic', 'true');
     this.feedbackElement.textContent = message;
     this.feedbackElement.classList.remove('feedback--correct','feedback--incorrect');
     if (status === true) this.feedbackElement.classList.add('feedback--correct');

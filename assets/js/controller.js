@@ -113,16 +113,24 @@
     gameState.hasAnswered = true;
     // disable buttons
     view.toggleAnswerButtons(true, false);
+  // Ensure assistive tech knows options are disabled
+  const allButtons = Array.from(document.querySelectorAll('.answer-option'));
+  allButtons.forEach(b => b.setAttribute('aria-disabled', 'true'));
 
     // mark selection
     const buttons = Array.from(document.querySelectorAll('.answer-option'));
     const button = buttons[selectedIndex];
     if (button) button.classList.add('selected');
+  // mark aria-selected for the chosen option
+  try { button.setAttribute('aria-selected', 'true'); } catch (e) {}
 
     const correctButton = buttons[q.correctIndex];
     if (correctButton) correctButton.classList.add('correct');
+    // Announce correct option via its accessible name as well
+    try { correctButton.setAttribute('aria-label', `${correctButton.textContent}. Correct answer.`); } catch (e) {}
     if (selectedIndex !== q.correctIndex) {
       if (button) button.classList.add('incorrect');
+      try { if (button) button.setAttribute('aria-label', `${button.textContent}. Your selection. Incorrect.`); } catch (e) {}
       view.incrementWrongAnswer();
       wrongStreak += 1; correctStreak = 0;
       const correctLabel = q.options[q.correctIndex]?.label || q.correctAnswerLabel;

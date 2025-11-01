@@ -72,16 +72,18 @@
                             <div id="options" class="quiz__options" role="listbox" aria-label="Answer choices"></div> -->
                             <!-- <p id="feedback" class="quiz__feedback" aria-live="polite"></p> -->
                                                         <div class="row row-1">
-                                                            <p class="question-text" aria-live="polite">Select a country to get started.</p>
+                                                            <p id="questionText" class="question-text" aria-live="polite" aria-atomic="true" tabindex="-1">Select a country to get started.</p>
                                                         </div>
-                                                        <div class="row row-2 hidden" aria-hidden="true">
-                                                                <button class="answer-option" type="button"></button>
-                                                                <button class="answer-option" type="button"></button>
-                                                        </div>
-                                                        <div class="row row-3 hidden" aria-hidden="true">
-                                                                <button class="answer-option" type="button"></button>
-                                                                <button class="answer-option" type="button"></button>
-                                                        </div>
+                            <div id="options" role="listbox" aria-labelledby="questionText">
+                              <div class="row row-2 hidden" aria-hidden="true">
+                                  <button class="answer-option" type="button" role="option" aria-selected="false"></button>
+                                  <button class="answer-option" type="button" role="option" aria-selected="false"></button>
+                              </div>
+                              <div class="row row-3 hidden" aria-hidden="true">
+                                  <button class="answer-option" type="button" role="option" aria-selected="false"></button>
+                                  <button class="answer-option" type="button" role="option" aria-selected="false"></button>
+                              </div>
+                            </div>
                                                         <div class="row row-4 hidden" aria-hidden="true">
                                                                 <p class="feedback" aria-live="polite"></p>
                                                                 <button id="nextQuestionBtn" class="hidden" type="button">Next Question</button>
