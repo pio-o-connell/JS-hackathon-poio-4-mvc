@@ -706,3 +706,92 @@ footer {
     font-size: 0.8rem;
   }
 }
+
+/* Improved 320px responsiveness: ensure layout stacks and fits without horizontal overflow */
+@media (max-width: 320px) {
+  /* Use full width and remove side paddings */
+  .game-area {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+
+  /* Stack controls and question area vertically */
+  .controls-area {
+    width: 100%;
+    padding: 6px 0;
+  }
+
+  .control-area {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 0;
+  }
+
+  /* Make the big circular buttons much smaller to fit */
+  .btn--big {
+    width: 60px;
+    height: 60px;
+    border-width: 6px;
+    font-size: 1.6rem;
+    margin: 0 6px;
+  }
+
+  .btn--big::after { left: -0.4em; }
+
+  /* Difficulty select matches reduced button size */
+  #difficulty-select {
+    width: 60px;
+    height: 60px;
+    font-size: 0.65rem;
+    border-width: 6px;
+    margin-left: 0;
+  }
+
+  /* Make the question area stack and shrink padding */
+  .question-area {
+    flex-direction: column;
+    padding: 24px 6px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .left-pane, .right-pane {
+    flex: none;
+    width: 100%;
+  }
+
+  .item-list {
+    max-width: 100%;
+    gap: 6px;
+  }
+
+  .country {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .quiz__body {
+    max-width: 100%;
+    padding: 8px;
+  }
+
+  .row-2 button, .row-3 button {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  /* Ensure overlay covers correctly on small screens */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  footer { padding: 0.6rem; font-size: 0.85rem; }
+}
