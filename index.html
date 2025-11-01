@@ -30,6 +30,13 @@
                     <button data-type="languages" class="btn btn--big btn--orange">
                         <i class="fa-solid fa-language" style="color:orange"></i>
                     </button>
+                    <!-- Difficulty selector -->
+                    <label for="difficulty-select" class="sr-only">Difficulty</label>
+                    <select id="difficulty-select" class="quiz__select" aria-label="Select difficulty">
+                        <option value="easy" selected>Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
                     <!-- <button data-type="division" class="btn btn--big btn--red">
                         <i class="fas fa-divide"></i>
                     </button> -->
@@ -105,7 +112,8 @@
          <!-- Load UI first, then quiz controller -->
          
         
-        <script src="assets/js/script.js"></script>
-        <script src="assets/js/quiz.js"></script>
+        <script src="assets/js/model.js"></script>
+        <script src="assets/js/view.js"></script>
+        <script src="assets/js/controller.js"></script>
     </body>
 </html>

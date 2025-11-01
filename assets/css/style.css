@@ -412,6 +412,52 @@ body {
     color: white;
 }
 
+/* Visual selected state for mode buttons (mirror hover/active) */
+.btn--green.mode-selected {
+  background-color: darkgreen;
+  color: white;
+}
+.btn--blue.mode-selected {
+  background-color: darkblue;
+  color: white;
+}
+.btn--orange.mode-selected {
+  background-color: darkorange;
+  color: white;
+}
+
+/* Style the difficulty select so it matches the appearance of the control-area buttons */
+#difficulty-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    padding: 0 0.5rem;
+    border-radius: 50%;
+    border: 10px solid #445361; /* default border like other controls */
+    background-color: white;
+    color: inherit;
+    font-family: var(--primary-font, "Raleway", sans-serif);
+    font-size: 0.9rem; /* slightly smaller so option text fits */
+    text-align: center;
+    text-align-last: center; /* center the selected option in many browsers */
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+/* Smaller screens: scale the select like the buttons do */
+@media (max-width: 425px) {
+  #difficulty-select {
+    width: 50px;
+    height: 50px;
+    font-size: 0.7rem;
+    padding: 0;
+    margin-left: 0.2rem;
+  }
+}
+
 .btn--gray {
     margin-top: 25px;
     background-color: #445361;
