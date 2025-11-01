@@ -99,15 +99,17 @@ body {
 }
 
 .answer-option.correct {
-  background: #2e7d32;
-  color: #fff;
-  border-color: #2e7d32;
+  /* Correct answer - Bilbao (#177e13) */
+  background: #177e13;
+  color: #ffffff;
+  border-color: #177e13;
 }
 
 .answer-option.incorrect {
-  background: #c62828;
-  color: #fff;
-  border-color: #c62828;
+  /* Wrong answer - Buttercup (#f7a71c). Use dark text for contrast. */
+  background: #f7a71c;
+  color: #000000;
+  border-color: #f7a71c;
 }
 
 .answer-option.selected {
@@ -512,7 +514,8 @@ body {
   border-radius: 12px;
   padding: 0.6rem 1rem;
   border: none;
-  background-color: #007bff;
+  /* Default / neutral buttons - Persian Blue (#1915c9) */
+  background-color: #1915c9;
   color: white;
   cursor: pointer;
   transition: all 0.2s ease; /* smooth hover */
@@ -520,7 +523,7 @@ body {
 /* Hover effect for Row 2 & 3 buttons */
 .row-2 button:hover,
 .row-3 button:hover {
-  background-color: #0056b3; /* darker blue */
+  background-color: #15116a; /* slightly darker Persian Blue */
   transform: scale(1.05); /* slight grow */
 }
 
